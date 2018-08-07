@@ -105,7 +105,8 @@ public class Receiver extends Thread {
 			} 
 			else if (toUserIdentifier.equals(PacketDestination.TO_ALL_CLIENTS_WITH_ME.getPacketDestination())) {
 				server.sendPacket(packet, server.getUsers());
-			} else {
+			} 
+			else {
 				if (!bridge.containsUser(toUserIdentifier))
 					continue;
 				server.sendPacket(packet, bridge.getUser(toUserIdentifier));
