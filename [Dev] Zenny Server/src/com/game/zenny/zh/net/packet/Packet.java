@@ -6,7 +6,6 @@ import java.util.Map.Entry;
 import org.json.simple.JSONArray;
 
 import com.game.zenny.zh.net.User;
-import com.game.zenny.zh.net.client.Client;
 import com.game.zenny.zh.net.server.Server;
 
 public abstract class Packet {
@@ -78,12 +77,6 @@ public abstract class Packet {
 	 * @param fromUser
 	 */
 	public abstract void serverReceivedAction(Server server, User fromUser);
-
-	/**
-	 * @param client
-	 * @param fromUserIdentifier
-	 */
-	public abstract void clientReceivedAction(Client client, String fromUserIdentifier);
 
 	/**
 	 * @return the fromUserIdentifier

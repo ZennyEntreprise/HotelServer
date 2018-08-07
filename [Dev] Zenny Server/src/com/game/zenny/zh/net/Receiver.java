@@ -16,8 +16,6 @@ import com.game.zenny.zh.net.logger.Logger;
 import com.game.zenny.zh.net.packet.Packet;
 import com.game.zenny.zh.net.packet.PacketDestination;
 import com.game.zenny.zh.net.packet.login.LoginPacket;
-import com.game.zenny.zh.net.packet.login.ValidLoginPacket;
-import com.game.zenny.zh.net.packet.user.AddUserPacket;
 import com.game.zenny.zh.net.server.Server;
 
 public class Receiver extends Thread {
@@ -89,14 +87,11 @@ public class Receiver extends Thread {
 				fromUser = new User(fromUserIdentifier, datagramPacket.getAddress(), datagramPacket.getPort());
 			}
 
-			if (packet instanceof LoginPacket || packet instanceof ValidLoginPacket || packet instanceof AddUserPacket || bridge.containsUser(fromUserIdentifier)) {
+			if (packet instanceof LoginPacket || bridge.containsUser(fromUserIdentifier)) {
 				bridge.packetAction(packet, fromUser);
 			} else {
 				continue;
 			}
-
-			if (!(bridge.getIdentifier().equals("server")))
-				continue;
 
 			Server server = (Server) bridge;
 
