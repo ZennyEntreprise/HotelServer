@@ -68,9 +68,9 @@ public class LoginPacket extends Packet {
 		} else if (server.containsPlayer(newPlayerIdentifier) && server.containsPlayer(fromPlayerAddress, fromPlayerPort)) {
 			server.sendPacket(new ErrorLoginPacket(Packet.buildDatasObject(ErrorLoginPacket.ErrorMessage.USER_IDENTIFIER_USER_IP_AND_USER_PORT_ALREADY_EXISTS.getErrorMessage()), server.getIdentifier(), fromPlayer.getPlayerIdentifier()), fromPlayer);
 		} else {
-			fromPlayer.setPlayerIdentifier(newPlayerIdentifier);
-			server.addPlayer(fromPlayer);
-			server.sendPacket(new ValidLoginPacket(Packet.buildDatasObject(playerIdentifier), server.getIdentifier(), fromPlayer.getPlayerIdentifier()), fromPlayer);
+			Player player = new Player(newPlayerIdentifier, fromPlayerAddress, fromPlayerPort);
+			server.addPlayer(player);
+			server.sendPacket(new ValidLoginPacket(Packet.buildDatasObject(player.toJSON()), server.getIdentifier(), player.getPlayerIdentifier()), player);
 		}
 	}
 

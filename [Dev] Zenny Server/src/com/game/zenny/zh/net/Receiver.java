@@ -81,9 +81,8 @@ public class Receiver extends Thread {
 			Logger.log(bridge, LogType.INFO, "RECEIVING PACKET   :   " + logJson.toJSONString());
 
 			Player fromPlayer = null;
-			if (bridge.containsPlayer(fromPlayerIdentifier, datagramPacket.getAddress(), datagramPacket.getPort())) {
-				fromPlayer = bridge.getPlayer(fromPlayerIdentifier, datagramPacket.getAddress(),
-						datagramPacket.getPort());
+			if (bridge.containsPlayer(fromPlayerIdentifier)) {
+				fromPlayer = bridge.getPlayer(fromPlayerIdentifier);
 			} else {
 				fromPlayer = new Player(fromPlayerIdentifier, datagramPacket.getAddress(), datagramPacket.getPort());
 			}

@@ -28,6 +28,7 @@ public class DisconnectPacket extends Packet {
 	public void serverReceivedAction(Server server, Player fromPlayer) {
 		if (server.containsPlayer(fromPlayer)) {
 			server.removePlayer(fromPlayer);
+			System.out.println(fromPlayer.getUsername() + " disconnected");
 		}
 	}
 

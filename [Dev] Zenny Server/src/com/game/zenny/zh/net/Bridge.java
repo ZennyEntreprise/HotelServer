@@ -141,19 +141,23 @@ public abstract class Bridge {
 	}
 
 	/**
-	 * @param identifier
-	 */
-	public void addPlayer(String playerIdentifier) {
-		allPlayers.add(new Player(playerIdentifier));
-	}
-
-	/**
 	 * @param playerIdentifier
 	 * @param playerAddress
 	 * @param playerPort
 	 */
 	public void addPlayer(String playerIdentifier, InetAddress playerAddress, int playerPort) {
 		allPlayers.add(new Player(playerIdentifier, playerAddress, playerPort));
+	}
+	
+	/**
+	 * @param playerIdentifier
+	 * @param playerAddress
+	 * @param playerPort
+	 * @param username
+	 * @param credits
+	 */
+	public void addPlayer(String playerIdentifier, InetAddress playerAddress, int playerPort, String username, int credits) {
+		allPlayers.add(new Player(playerIdentifier, playerAddress, playerPort, username, credits));
 	}
 
 	/**
@@ -194,49 +198,11 @@ public abstract class Bridge {
 
 	/**
 	 * @param playerIdentifier
-	 * @param playerAddress
-	 * @param playerPort
-	 * @return true if the player list contains player with this playerIdentifier,
-	 *         this playerAddress and this playerPort
-	 */
-	public boolean containsPlayer(String playerIdentifier, InetAddress playerAddress, int playerPort) {
-		return containsPlayer(playerIdentifier) && containsPlayer(playerAddress, playerPort);
-	}
-
-	/**
-	 * @param playerIdentifier
 	 * @return the player where his playerIdentifier is the same
 	 */
 	public Player getPlayer(String playerIdentifier) {
 		for (Player player : allPlayers)
 			if (player.getPlayerIdentifier().equals(playerIdentifier))
-				return player;
-		return null;
-	}
-
-	/**
-	 * @param playerAddress
-	 * @param playerPort
-	 * @return the player where his playerAddress and his playerPort are the same
-	 */
-	public Player getPlayer(InetAddress playerAddress, int playerPort) {
-		for (Player player : allPlayers)
-			if (player.getPlayerAddress().toString().equals(playerAddress.toString()) && player.getPlayerPort() == playerPort)
-				return player;
-		return null;
-	}
-
-	/**
-	 * @param playerIdentifier
-	 * @param playerAddress
-	 * @param playerPort
-	 * @return the player where his playerIdentifier, his playerAddress and his
-	 *         playerPort are the same
-	 */
-	public Player getPlayer(String playerIdentifier, InetAddress playerAddress, int playerPort) {
-		for (Player player : allPlayers)
-			if (player.getPlayerIdentifier().equals(playerIdentifier) && player.getPlayerAddress().toString().equals(playerAddress.toString())
-					&& player.getPlayerPort() == playerPort)
 				return player;
 		return null;
 	}
@@ -257,25 +223,4 @@ public abstract class Bridge {
 				allPlayers.remove(player);
 	}
 
-	/**
-	 * @param playerAddress
-	 * @param playerPort
-	 */
-	public void removePlayer(InetAddress playerAddress, int playerPort) {
-		for (Player player : allPlayers)
-			if (player.getPlayerAddress().toString().equals(playerAddress.toString()) && player.getPlayerPort() == playerPort)
-				allPlayers.remove(player);
-	}
-
-	/**
-	 * @param playerIdentifier
-	 * @param playerAddress
-	 * @param playerPort
-	 */
-	public void removePlayer(String playerIdentifier, InetAddress playerAddress, int playerPort) {
-		for (Player player : allPlayers)
-			if (player.getPlayerIdentifier().equals(identifier) && player.getPlayerAddress().toString().equals(playerAddress.toString())
-					&& player.getPlayerPort() == playerPort)
-				allPlayers.remove(player);
-	}
 }
