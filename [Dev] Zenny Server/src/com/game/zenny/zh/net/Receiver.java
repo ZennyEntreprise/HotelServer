@@ -11,6 +11,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.game.zenny.zh.entity.Player;
 import com.game.zenny.zh.net.logger.LogType;
 import com.game.zenny.zh.net.logger.Logger;
 import com.game.zenny.zh.net.packet.Packet;
@@ -50,8 +51,8 @@ public class Receiver extends Thread {
 				continue;
 
 			long packetTypeID = getPacketTypeID(json);
-			String fromUserIdentifier = getFromUserIdentifier(json);
-			String toUserIdentifier = getToUserIdentifier(json);
+			String fromPlayerIdentifier = getFromPlayerIdentifier(json);
+			String toPlayerIdentifier = getToPlayerIdentifier(json);
 			JSONArray datasArray = getDatasArray(json);
 			if (datasArray == null)
 				continue;
@@ -64,8 +65,8 @@ public class Receiver extends Thread {
 				Class<?> packetClass = Packet.getPacketClassByID(packetTypeID);
 				Constructor<?> packetClassConstructor = packetClass.getConstructor(Object[].class, String.class,
 						String.class);
-				packet = (Packet) packetClassConstructor.newInstance((Object) datas, fromUserIdentifier,
-						toUserIdentifier);
+				packet = (Packet) packetClassConstructor.newInstance((Object) datas, fromPlayerIdentifier,
+						toPlayerIdentifier);
 			} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
 					| IllegalArgumentException | InvocationTargetException e) {
 				e.printStackTrace();
@@ -79,37 +80,37 @@ public class Receiver extends Thread {
 			logJson.put("packetJSON", json);
 			Logger.log(bridge, LogType.INFO, "RECEIVING PACKET   :   " + logJson.toJSONString());
 
-			User fromUser = null;
-			if (bridge.containsUser(fromUserIdentifier, datagramPacket.getAddress(), datagramPacket.getPort())) {
-				fromUser = bridge.getUser(fromUserIdentifier, datagramPacket.getAddress(),
+			Player fromPlayer = null;
+			if (bridge.containsPlayer(fromPlayerIdentifier, datagramPacket.getAddress(), datagramPacket.getPort())) {
+				fromPlayer = bridge.getPlayer(fromPlayerIdentifier, datagramPacket.getAddress(),
 						datagramPacket.getPort());
 			} else {
-				fromUser = new User(fromUserIdentifier, datagramPacket.getAddress(), datagramPacket.getPort());
+				fromPlayer = new Player(fromPlayerIdentifier, datagramPacket.getAddress(), datagramPacket.getPort());
 			}
 
-			if (packet instanceof LoginPacket || bridge.containsUser(fromUserIdentifier)) {
-				bridge.packetAction(packet, fromUser);
+			if (packet instanceof LoginPacket || bridge.containsPlayer(fromPlayerIdentifier)) {
+				bridge.packetAction(packet, fromPlayer);
 			} else {
 				continue;
 			}
 
 			Server server = (Server) bridge;
 
-			if (toUserIdentifier.equals(PacketDestination.TO_SERVER.getPacketDestination())) {
+			if (toPlayerIdentifier.equals(PacketDestination.TO_SERVER.getPacketDestination())) {
 				continue;
 			} 
-			else if (toUserIdentifier.equals(PacketDestination.TO_ALL_CLIENTS_WITHOUT_ME.getPacketDestination())) {
-				ArrayList<User> toUsers = (ArrayList<User>) server.getUsers().clone();
-				toUsers.remove(fromUser);
-				server.sendPacket(packet, toUsers);
+			else if (toPlayerIdentifier.equals(PacketDestination.TO_ALL_CLIENTS_WITHOUT_ME.getPacketDestination())) {
+				ArrayList<Player> toPlayers = (ArrayList<Player>) server.getPlayers().clone();
+				toPlayers.remove(fromPlayer);
+				server.sendPacket(packet, toPlayers);
 			} 
-			else if (toUserIdentifier.equals(PacketDestination.TO_ALL_CLIENTS_WITH_ME.getPacketDestination())) {
-				server.sendPacket(packet, server.getUsers());
+			else if (toPlayerIdentifier.equals(PacketDestination.TO_ALL_CLIENTS_WITH_ME.getPacketDestination())) {
+				server.sendPacket(packet, server.getPlayers());
 			} 
 			else {
-				if (!bridge.containsUser(toUserIdentifier))
+				if (!bridge.containsPlayer(toPlayerIdentifier))
 					continue;
-				server.sendPacket(packet, bridge.getUser(toUserIdentifier));
+				server.sendPacket(packet, bridge.getPlayer(toPlayerIdentifier));
 			}
 
 		}
@@ -143,11 +144,11 @@ public class Receiver extends Thread {
 
 	/**
 	 * @param json
-	 * @return from user identifier contained in json
+	 * @return from player identifier contained in json
 	 */
-	public String getFromUserIdentifier(JSONObject json) {
+	public String getFromPlayerIdentifier(JSONObject json) {
 		try {
-			return (String) json.get("fromUserIdentifier");
+			return (String) json.get("fromPlayerIdentifier");
 		} catch (NullPointerException e) {
 			return "unknown";
 		}
@@ -155,11 +156,11 @@ public class Receiver extends Thread {
 
 	/**
 	 * @param json
-	 * @return to user identifier contained in json
+	 * @return to player identifier contained in json
 	 */
-	public String getToUserIdentifier(JSONObject json) {
+	public String getToPlayerIdentifier(JSONObject json) {
 		try {
-			return (String) json.get("toUserIdentifier");
+			return (String) json.get("toPlayerIdentifier");
 		} catch (NullPointerException e) {
 			return "unknown";
 		}

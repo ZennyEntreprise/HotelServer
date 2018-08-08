@@ -4,8 +4,8 @@ import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.util.ArrayList;
 
+import com.game.zenny.zh.entity.Player;
 import com.game.zenny.zh.net.Bridge;
-import com.game.zenny.zh.net.User;
 import com.game.zenny.zh.net.logger.LogType;
 import com.game.zenny.zh.net.logger.Logger;
 import com.game.zenny.zh.net.packet.Packet;
@@ -50,29 +50,29 @@ public class Server extends Bridge {
 
 	/**
 	 * @param packet
-	 * @param from user
+	 * @param from player
 	 */
 	@Override
-	public void packetAction(Packet packet, User fromUser) {
-		packet.serverReceivedAction(this, fromUser);
+	public void packetAction(Packet packet, Player fromPlayer) {
+		packet.serverReceivedAction(this, fromPlayer);
 	}
 
 	/**
 	 * @param packet
-	 * @param to user
+	 * @param to player
 	 */
-	public void sendPacket(Packet packet, User toUser) {
-		getSender().sendPacket(packet, toUser.getUserAddress(), toUser.getUserPort());
+	public void sendPacket(Packet packet, Player toPlayer) {
+		getSender().sendPacket(packet, toPlayer.getPlayerAddress(), toPlayer.getPlayerPort());
 	}
 
 	/**
 	 * @param packet
-	 * @param to users
+	 * @param to players
 	 */
-	public void sendPacket(Packet packet, ArrayList<User> toUsers) {
-		for (User user : toUsers) {
-			packet.setToUserIdentifier(user.getUserIdentifier());
-			sendPacket(packet, user);
+	public void sendPacket(Packet packet, ArrayList<Player> toPlayers) {
+		for (Player player : toPlayers) {
+			packet.setToPlayerIdentifier(player.getPlayerIdentifier());
+			sendPacket(packet, player);
 		}
 	}
 }

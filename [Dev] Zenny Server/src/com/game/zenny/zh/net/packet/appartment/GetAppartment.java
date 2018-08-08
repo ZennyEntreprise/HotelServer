@@ -1,4 +1,4 @@
-package com.game.zenny.zh.net.packet.disconnect;
+package com.game.zenny.zh.net.packet.appartment;
 
 import org.json.simple.JSONArray;
 
@@ -6,17 +6,15 @@ import com.game.zenny.zh.entity.Player;
 import com.game.zenny.zh.net.packet.Packet;
 import com.game.zenny.zh.net.server.Server;
 
-public class DisconnectPacket extends Packet {
+public class GetAppartment extends Packet {
 
-	//// OBJECT
-	// -- DISCONNECT PACKET
-	public DisconnectPacket(Object[] datas, String fromPlayerIdentifier, String toPlayerIdentifier) {
+	public GetAppartment(Object[] datas, String fromPlayerIdentifier, String toPlayerIdentifier) {
 		super(datas, fromPlayerIdentifier, toPlayerIdentifier);
 	}
 
 	@Override
 	public int getPacketTypeID() {
-		return 4;
+		return 0;
 	}
 
 	@Override
@@ -26,9 +24,7 @@ public class DisconnectPacket extends Packet {
 
 	@Override
 	public void serverReceivedAction(Server server, Player fromPlayer) {
-		if (server.containsPlayer(fromPlayer)) {
-			server.removePlayer(fromPlayer);
-		}
+		
 	}
 
 }

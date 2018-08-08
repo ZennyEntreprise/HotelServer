@@ -33,8 +33,8 @@ public class Sender {
 	public void sendPacket(Packet packet, InetAddress address, int port) {
 		JSONObject buildJson = new JSONObject();
 		buildJson.put("packetTypeID", packet.getPacketTypeID());
-		buildJson.put("fromUserIdentifier", packet.getFromUserIdentifier());
-		buildJson.put("toUserIdentifier", packet.getToUserIdentifier());
+		buildJson.put("fromPlayerIdentifier", packet.getFromPlayerIdentifier());
+		buildJson.put("toPlayerIdentifier", packet.getToPlayerIdentifier());
 		buildJson.put("datas", packet.build(new JSONArray()));
 
 		byte[] buffer = buildJson.toJSONString().getBytes();

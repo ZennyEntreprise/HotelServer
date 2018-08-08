@@ -2,7 +2,7 @@ package com.game.zenny.zh.net.packet.login;
 
 import org.json.simple.JSONArray;
 
-import com.game.zenny.zh.net.User;
+import com.game.zenny.zh.entity.Player;
 import com.game.zenny.zh.net.exception.InvalidPacketConstructorException;
 import com.game.zenny.zh.net.packet.Packet;
 import com.game.zenny.zh.net.server.Server;
@@ -12,9 +12,9 @@ public class ErrorLoginPacket extends Packet {
 	//// ENUM
 	// -- ERROR MESSAGE
 	static enum ErrorMessage {
-		USER_IDENTIFIER_ALREADY_EXISTS("User identifier already exists"),
-		USER_IP_AND_USER_PORT_ALREADY_EXISTS("User IP and user port already exists"),
-		USER_IDENTIFIER_USER_IP_AND_USER_PORT_ALREADY_EXISTS("User identifier, user ip and user port already exists");
+		USER_IDENTIFIER_ALREADY_EXISTS("Player identifier already exists"),
+		USER_IP_AND_USER_PORT_ALREADY_EXISTS("Player IP and player port already exists"),
+		USER_IDENTIFIER_USER_IP_AND_USER_PORT_ALREADY_EXISTS("Player identifier, player ip and player port already exists");
 		
 		private String errorMessage;
 		
@@ -37,8 +37,8 @@ public class ErrorLoginPacket extends Packet {
 	// -- ERROR LOGIN PACKET
 	private String errorMessage;
 	
-	public ErrorLoginPacket(Object[] datas, String fromUserIdentifier, String toUserIdentifier) {
-		super(datas, fromUserIdentifier, toUserIdentifier);
+	public ErrorLoginPacket(Object[] datas, String fromPlayerIdentifier, String toPlayerIdentifier) {
+		super(datas, fromPlayerIdentifier, toPlayerIdentifier);
 		
 		if (datas.length == 0)
 			try {
@@ -78,7 +78,7 @@ public class ErrorLoginPacket extends Packet {
 	}
 
 	@Override
-	public void serverReceivedAction(Server server, User fromUser) {
+	public void serverReceivedAction(Server server, Player fromPlayer) {
 		return;
 	}
 

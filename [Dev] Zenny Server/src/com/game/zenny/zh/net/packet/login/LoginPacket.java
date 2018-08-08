@@ -4,7 +4,7 @@ import java.net.InetAddress;
 
 import org.json.simple.JSONArray;
 
-import com.game.zenny.zh.net.User;
+import com.game.zenny.zh.entity.Player;
 import com.game.zenny.zh.net.exception.InvalidPacketConstructorException;
 import com.game.zenny.zh.net.packet.Packet;
 import com.game.zenny.zh.net.server.Server;
@@ -13,10 +13,10 @@ public class LoginPacket extends Packet {
 
 	//// OBJECT
 	// -- LOGIN PACKET
-	private String userIdentifier;
+	private String playerIdentifier;
 
-	public LoginPacket(Object[] datas, String fromUserIdentifier, String toUserIdentifier) {
-		super(datas, fromUserIdentifier, toUserIdentifier);
+	public LoginPacket(Object[] datas, String fromPlayerIdentifier, String toPlayerIdentifier) {
+		super(datas, fromPlayerIdentifier, toPlayerIdentifier);
 
 		if (datas.length == 0)
 			try {
@@ -39,7 +39,7 @@ public class LoginPacket extends Packet {
 				e.printStackTrace();
 			}
 
-		this.userIdentifier = (String) datas[0];
+		this.playerIdentifier = (String) datas[0];
 	}
 
 	@Override
@@ -50,27 +50,27 @@ public class LoginPacket extends Packet {
 	@SuppressWarnings("unchecked")
 	@Override
 	public JSONArray build(JSONArray datas) {
-		datas.add(userIdentifier);
+		datas.add(playerIdentifier);
 
 		return datas;
 	}
 
 	@Override
-	public void serverReceivedAction(Server server, User fromUser) {
-		String newUserIdentifier = this.userIdentifier;
-		InetAddress fromUserAddress = fromUser.getUserAddress();
-		int fromUserPort = fromUser.getUserPort();
+	public void serverReceivedAction(Server server, Player fromPlayer) {
+		String newPlayerIdentifier = this.playerIdentifier;
+		InetAddress fromPlayerAddress = fromPlayer.getPlayerAddress();
+		int fromPlayerPort = fromPlayer.getPlayerPort();
 
-		if (server.containsUser(newUserIdentifier) && !server.containsUser(fromUserAddress, fromUserPort)) {
-			server.sendPacket(new ErrorLoginPacket(Packet.buildDatasObject(ErrorLoginPacket.ErrorMessage.USER_IDENTIFIER_ALREADY_EXISTS.getErrorMessage()), server.getIdentifier(), fromUser.getUserIdentifier()), fromUser);
-		} else if (!server.containsUser(newUserIdentifier) && server.containsUser(fromUserAddress, fromUserPort)) {
-			server.sendPacket(new ErrorLoginPacket(Packet.buildDatasObject(ErrorLoginPacket.ErrorMessage.USER_IP_AND_USER_PORT_ALREADY_EXISTS.getErrorMessage()), server.getIdentifier(), fromUser.getUserIdentifier()), fromUser);
-		} else if (server.containsUser(newUserIdentifier) && server.containsUser(fromUserAddress, fromUserPort)) {
-			server.sendPacket(new ErrorLoginPacket(Packet.buildDatasObject(ErrorLoginPacket.ErrorMessage.USER_IDENTIFIER_USER_IP_AND_USER_PORT_ALREADY_EXISTS.getErrorMessage()), server.getIdentifier(), fromUser.getUserIdentifier()), fromUser);
+		if (server.containsPlayer(newPlayerIdentifier) && !server.containsPlayer(fromPlayerAddress, fromPlayerPort)) {
+			server.sendPacket(new ErrorLoginPacket(Packet.buildDatasObject(ErrorLoginPacket.ErrorMessage.USER_IDENTIFIER_ALREADY_EXISTS.getErrorMessage()), server.getIdentifier(), fromPlayer.getPlayerIdentifier()), fromPlayer);
+		} else if (!server.containsPlayer(newPlayerIdentifier) && server.containsPlayer(fromPlayerAddress, fromPlayerPort)) {
+			server.sendPacket(new ErrorLoginPacket(Packet.buildDatasObject(ErrorLoginPacket.ErrorMessage.USER_IP_AND_USER_PORT_ALREADY_EXISTS.getErrorMessage()), server.getIdentifier(), fromPlayer.getPlayerIdentifier()), fromPlayer);
+		} else if (server.containsPlayer(newPlayerIdentifier) && server.containsPlayer(fromPlayerAddress, fromPlayerPort)) {
+			server.sendPacket(new ErrorLoginPacket(Packet.buildDatasObject(ErrorLoginPacket.ErrorMessage.USER_IDENTIFIER_USER_IP_AND_USER_PORT_ALREADY_EXISTS.getErrorMessage()), server.getIdentifier(), fromPlayer.getPlayerIdentifier()), fromPlayer);
 		} else {
-			fromUser.setUserIdentifier(newUserIdentifier);
-			server.addUser(fromUser);
-			server.sendPacket(new ValidLoginPacket(Packet.buildDatasObject(userIdentifier), server.getIdentifier(), fromUser.getUserIdentifier()), fromUser);
+			fromPlayer.setPlayerIdentifier(newPlayerIdentifier);
+			server.addPlayer(fromPlayer);
+			server.sendPacket(new ValidLoginPacket(Packet.buildDatasObject(playerIdentifier), server.getIdentifier(), fromPlayer.getPlayerIdentifier()), fromPlayer);
 		}
 	}
 

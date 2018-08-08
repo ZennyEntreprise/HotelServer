@@ -2,7 +2,7 @@ package com.game.zenny.zh.net.packet;
 
 import org.json.simple.JSONArray;
 
-import com.game.zenny.zh.net.User;
+import com.game.zenny.zh.entity.Player;
 import com.game.zenny.zh.net.logger.LogType;
 import com.game.zenny.zh.net.logger.Logger;
 import com.game.zenny.zh.net.server.Server;
@@ -26,7 +26,7 @@ public class UnknownPacket extends Packet {
 	}
 
 	@Override
-	public void serverReceivedAction(Server server, User fromUser) {
+	public void serverReceivedAction(Server server, Player fromPlayer) {
 		Logger.log(server, LogType.WARNING, "Unknown Packet");
 	}
 
