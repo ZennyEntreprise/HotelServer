@@ -12,8 +12,8 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.game.zenny.zh.entity.Player;
-import com.game.zenny.zh.net.logger.LogType;
-import com.game.zenny.zh.net.logger.Logger;
+import com.game.zenny.zh.logger.LogType;
+import com.game.zenny.zh.logger.Logger;
 import com.game.zenny.zh.net.packet.Packet;
 import com.game.zenny.zh.net.packet.PacketDestination;
 import com.game.zenny.zh.net.packet.login.LoginPacket;

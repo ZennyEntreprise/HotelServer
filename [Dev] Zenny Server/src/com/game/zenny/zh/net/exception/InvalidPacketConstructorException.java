@@ -1,7 +1,7 @@
 package com.game.zenny.zh.net.exception;
 
-import com.game.zenny.zh.net.logger.LogType;
-import com.game.zenny.zh.net.logger.Logger;
+import com.game.zenny.zh.logger.LogType;
+import com.game.zenny.zh.logger.Logger;
 
 public class InvalidPacketConstructorException extends Exception {
 

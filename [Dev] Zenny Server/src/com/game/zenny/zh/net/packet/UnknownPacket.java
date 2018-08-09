@@ -3,8 +3,8 @@ package com.game.zenny.zh.net.packet;
 import org.json.simple.JSONArray;
 
 import com.game.zenny.zh.entity.Player;
-import com.game.zenny.zh.net.logger.LogType;
-import com.game.zenny.zh.net.logger.Logger;
+import com.game.zenny.zh.logger.LogType;
+import com.game.zenny.zh.logger.Logger;
 import com.game.zenny.zh.net.server.Server;
 
 public class UnknownPacket extends Packet {

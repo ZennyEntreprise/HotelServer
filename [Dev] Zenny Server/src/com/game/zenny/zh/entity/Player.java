@@ -16,7 +16,7 @@ public class Player {
 	 */
 	public static String getPlayerUsernameInDB(String playerIdentifier) {
 		try {
-			ResultSet query = Server.requestDB("SELECT username FROM users WHERE uuid = '"+playerIdentifier+"'");
+			ResultSet query = Server.requestDB("SELECT username FROM users WHERE playerIdentifier = '"+playerIdentifier+"'");
 			query.next();
 			String username = query.getString("username");
 			query.close();
@@ -32,7 +32,7 @@ public class Player {
 	 */
 	public static int getPlayerCreditsInDB(String playerIdentifier) {
 		try {
-			ResultSet query = Server.requestDB("SELECT credits FROM users WHERE uuid = '"+playerIdentifier+"'");
+			ResultSet query = Server.requestDB("SELECT credits FROM users WHERE playerIdentifier = '"+playerIdentifier+"'");
 			query.next();
 			int credits = query.getInt("credits");
 			query.close();

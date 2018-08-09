@@ -5,6 +5,8 @@ import java.net.InetAddress;
 import org.json.simple.JSONArray;
 
 import com.game.zenny.zh.entity.Player;
+import com.game.zenny.zh.logger.LogType;
+import com.game.zenny.zh.logger.Logger;
 import com.game.zenny.zh.net.exception.InvalidPacketConstructorException;
 import com.game.zenny.zh.net.packet.Packet;
 import com.game.zenny.zh.net.server.Server;
@@ -71,6 +73,7 @@ public class LoginPacket extends Packet {
 			Player player = new Player(newPlayerIdentifier, fromPlayerAddress, fromPlayerPort);
 			server.addPlayer(player);
 			server.sendPacket(new ValidLoginPacket(Packet.buildDatasObject(player.toJSON()), server.getIdentifier(), player.getPlayerIdentifier()), player);
+			Logger.log(server, LogType.INFO, "Player \""+player.getUsername()+"\" connected");
 		}
 	}
 

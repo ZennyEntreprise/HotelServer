@@ -1,4 +1,4 @@
-package com.game.zenny.zh.net.logger;
+package com.game.zenny.zh.logger;
 
 public class ANSIColor {
 

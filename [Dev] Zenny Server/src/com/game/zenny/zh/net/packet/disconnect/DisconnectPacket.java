@@ -3,6 +3,8 @@ package com.game.zenny.zh.net.packet.disconnect;
 import org.json.simple.JSONArray;
 
 import com.game.zenny.zh.entity.Player;
+import com.game.zenny.zh.logger.LogType;
+import com.game.zenny.zh.logger.Logger;
 import com.game.zenny.zh.net.packet.Packet;
 import com.game.zenny.zh.net.server.Server;
 
@@ -28,7 +30,7 @@ public class DisconnectPacket extends Packet {
 	public void serverReceivedAction(Server server, Player fromPlayer) {
 		if (server.containsPlayer(fromPlayer)) {
 			server.removePlayer(fromPlayer);
-			System.out.println(fromPlayer.getUsername() + " disconnected");
+			Logger.log(server, LogType.INFO, "Player \""+fromPlayer.getUsername()+"\" disconnected");
 		}
 	}
 

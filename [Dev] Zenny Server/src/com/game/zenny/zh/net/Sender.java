@@ -7,8 +7,8 @@ import java.net.InetAddress;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import com.game.zenny.zh.net.logger.LogType;
-import com.game.zenny.zh.net.logger.Logger;
+import com.game.zenny.zh.logger.LogType;
+import com.game.zenny.zh.logger.Logger;
 import com.game.zenny.zh.net.packet.Packet;
 
 public class Sender {
