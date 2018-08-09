@@ -16,9 +16,9 @@ public class Player {
 	 */
 	public static String getPlayerUsernameInDB(String playerIdentifier) {
 		try {
-			ResultSet query = Server.requestDB("SELECT username FROM users WHERE playerIdentifier = '"+playerIdentifier+"'");
+			ResultSet query = Server.requestDB("SELECT playerUsername FROM players WHERE playerIdentifier = '"+playerIdentifier+"'");
 			query.next();
-			String username = query.getString("username");
+			String username = query.getString("playerUsername");
 			query.close();
 			return username;
 		} catch (SQLException e) {
@@ -32,11 +32,11 @@ public class Player {
 	 */
 	public static int getPlayerCreditsInDB(String playerIdentifier) {
 		try {
-			ResultSet query = Server.requestDB("SELECT credits FROM users WHERE playerIdentifier = '"+playerIdentifier+"'");
+			ResultSet query = Server.requestDB("SELECT playerCredits FROM players WHERE playerIdentifier = '"+playerIdentifier+"'");
 			query.next();
-			int credits = query.getInt("credits");
+			int playerCredits = query.getInt("playerCredits");
 			query.close();
-			return credits;
+			return playerCredits;
 		} catch (SQLException e) {
 			return 0;
 		}
@@ -47,8 +47,8 @@ public class Player {
 	private String playerIdentifier;
 	private InetAddress playerAddress;
 	private int playerPort;
-	private String username;
-	private int credits;
+	private String playerUsername;
+	private int playerCredits;
 
 	/**
 	 * @param playerIdentifier
@@ -66,12 +66,12 @@ public class Player {
 	 * @param playerPort
 	 * @param username
 	 */
-	public Player(String playerIdentifier, InetAddress playerAddress, int playerPort, String username, int credits) {
+	public Player(String playerIdentifier, InetAddress playerAddress, int playerPort, String playerUsername, int playerCredits) {
 		this.playerIdentifier = playerIdentifier;
 		this.playerAddress = playerAddress;
 		this.playerPort = playerPort;
-		this.username = username;
-		this.credits = credits;
+		this.playerUsername = playerUsername;
+		this.playerCredits = playerCredits;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -80,8 +80,8 @@ public class Player {
 		playerJSON.put("playerIdentifier", playerIdentifier);
 		playerJSON.put("playerAddress", playerAddress.getHostAddress().toString());
 		playerJSON.put("playerPort", playerPort);
-		playerJSON.put("username", username);
-		playerJSON.put("credits", credits);
+		playerJSON.put("playerUsername", playerUsername);
+		playerJSON.put("playerCredits", playerCredits);
 		
 		return playerJSON.toJSONString();
 	}
@@ -134,31 +134,31 @@ public class Player {
 	/**
 	 * @return the username
 	 */
-	public String getUsername() {
-		return username;
+	public String getPlayerUsername() {
+		return playerUsername;
 	}
 
 	/**
 	 * @param username
 	 *            the username to set
 	 */
-	public void setUsername(String username) {
-		this.username = username;
+	public void setPlayerUsername(String playerUsername) {
+		this.playerUsername = playerUsername;
 	}
 
 	/**
-	 * @return the credits
+	 * @return the playerCredits
 	 */
-	public int getCredits() {
-		return credits;
+	public int getPlayerCredits() {
+		return playerCredits;
 	}
 
 	/**
-	 * @param credits
-	 *            the credits to set
+	 * @param playerCredits
+	 *            the playerCredits to set
 	 */
-	public void setCredits(int credits) {
-		this.credits = credits;
+	public void setPlayerCredits(int playerCredits) {
+		this.playerCredits = playerCredits;
 	}
 
 }

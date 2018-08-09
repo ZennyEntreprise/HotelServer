@@ -81,13 +81,13 @@ public class Receiver extends Thread {
 			Logger.log(bridge, LogType.INFO, "RECEIVING PACKET   :   " + logJson.toJSONString());
 
 			Player fromPlayer = null;
-			if (bridge.containsPlayer(fromPlayerIdentifier)) {
-				fromPlayer = bridge.getPlayer(fromPlayerIdentifier);
+			if (bridge.getManager().containsPlayer(fromPlayerIdentifier)) {
+				fromPlayer = bridge.getManager().getPlayer(fromPlayerIdentifier);
 			} else {
 				fromPlayer = new Player(fromPlayerIdentifier, datagramPacket.getAddress(), datagramPacket.getPort());
 			}
 
-			if (packet instanceof LoginPacket || bridge.containsPlayer(fromPlayerIdentifier)) {
+			if (packet instanceof LoginPacket || bridge.getManager().containsPlayer(fromPlayerIdentifier)) {
 				bridge.packetAction(packet, fromPlayer);
 			} else {
 				continue;
@@ -99,17 +99,17 @@ public class Receiver extends Thread {
 				continue;
 			} 
 			else if (toPlayerIdentifier.equals(PacketDestination.TO_ALL_CLIENTS_WITHOUT_ME.getPacketDestination())) {
-				ArrayList<Player> toPlayers = (ArrayList<Player>) server.getPlayers().clone();
+				ArrayList<Player> toPlayers = (ArrayList<Player>) server.getManager().getPlayers().clone();
 				toPlayers.remove(fromPlayer);
 				server.sendPacket(packet, toPlayers);
 			} 
 			else if (toPlayerIdentifier.equals(PacketDestination.TO_ALL_CLIENTS_WITH_ME.getPacketDestination())) {
-				server.sendPacket(packet, server.getPlayers());
+				server.sendPacket(packet, server.getManager().getPlayers());
 			} 
 			else {
-				if (!bridge.containsPlayer(toPlayerIdentifier))
+				if (!bridge.getManager().containsPlayer(toPlayerIdentifier))
 					continue;
-				server.sendPacket(packet, bridge.getPlayer(toPlayerIdentifier));
+				server.sendPacket(packet, bridge.getManager().getPlayer(toPlayerIdentifier));
 			}
 
 		}

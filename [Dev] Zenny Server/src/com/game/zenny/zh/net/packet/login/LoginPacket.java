@@ -63,17 +63,17 @@ public class LoginPacket extends Packet {
 		InetAddress fromPlayerAddress = fromPlayer.getPlayerAddress();
 		int fromPlayerPort = fromPlayer.getPlayerPort();
 
-		if (server.containsPlayer(newPlayerIdentifier) && !server.containsPlayer(fromPlayerAddress, fromPlayerPort)) {
+		if (server.getManager().containsPlayer(newPlayerIdentifier) && !server.getManager().containsPlayer(fromPlayerAddress, fromPlayerPort)) {
 			server.sendPacket(new ErrorLoginPacket(Packet.buildDatasObject(ErrorLoginPacket.ErrorMessage.USER_IDENTIFIER_ALREADY_EXISTS.getErrorMessage()), server.getIdentifier(), fromPlayer.getPlayerIdentifier()), fromPlayer);
-		} else if (!server.containsPlayer(newPlayerIdentifier) && server.containsPlayer(fromPlayerAddress, fromPlayerPort)) {
+		} else if (!server.getManager().containsPlayer(newPlayerIdentifier) && server.getManager().containsPlayer(fromPlayerAddress, fromPlayerPort)) {
 			server.sendPacket(new ErrorLoginPacket(Packet.buildDatasObject(ErrorLoginPacket.ErrorMessage.USER_IP_AND_USER_PORT_ALREADY_EXISTS.getErrorMessage()), server.getIdentifier(), fromPlayer.getPlayerIdentifier()), fromPlayer);
-		} else if (server.containsPlayer(newPlayerIdentifier) && server.containsPlayer(fromPlayerAddress, fromPlayerPort)) {
+		} else if (server.getManager().containsPlayer(newPlayerIdentifier) && server.getManager().containsPlayer(fromPlayerAddress, fromPlayerPort)) {
 			server.sendPacket(new ErrorLoginPacket(Packet.buildDatasObject(ErrorLoginPacket.ErrorMessage.USER_IDENTIFIER_USER_IP_AND_USER_PORT_ALREADY_EXISTS.getErrorMessage()), server.getIdentifier(), fromPlayer.getPlayerIdentifier()), fromPlayer);
 		} else {
 			Player player = new Player(newPlayerIdentifier, fromPlayerAddress, fromPlayerPort);
-			server.addPlayer(player);
+			server.getManager().addPlayer(player);
 			server.sendPacket(new ValidLoginPacket(Packet.buildDatasObject(player.toJSON()), server.getIdentifier(), player.getPlayerIdentifier()), player);
-			Logger.log(server, LogType.INFO, "Player \""+player.getUsername()+"\" connected");
+			Logger.log(server, LogType.INFO, "Player \""+player.getPlayerUsername()+"\" connected");
 		}
 	}
 
