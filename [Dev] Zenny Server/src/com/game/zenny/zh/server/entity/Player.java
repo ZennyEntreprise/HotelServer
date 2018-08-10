@@ -45,6 +45,19 @@ public class Player {
 		}
 	}
 
+	public static String getPlayerSkinURLInDB(String playerIdentifier) {
+		try {
+			ResultSet query = Server.requestDB(
+					"SELECT playerSkinURL FROM players WHERE playerIdentifier = '" + playerIdentifier + "'");
+			query.next();
+			String username = query.getString("playerSkinURL");
+			query.close();
+			return username;
+		} catch (SQLException e) {
+			return null;
+		}
+	}
+	
 	//// OBJECT
 	// -- USER
 	private String playerIdentifier;
@@ -52,6 +65,7 @@ public class Player {
 	private int playerPort;
 	private String playerUsername;
 	private int playerCredits;
+	private String playerSkinURL;
 	private Appartment appartment;
 
 	/**
@@ -61,7 +75,7 @@ public class Player {
 	 */
 	public Player(String playerIdentifier, InetAddress playerAddress, int playerPort) {
 		this(playerIdentifier, playerAddress, playerPort, Player.getPlayerUsernameInDB(playerIdentifier),
-				Player.getPlayerCreditsInDB(playerIdentifier), null);
+				Player.getPlayerCreditsInDB(playerIdentifier), Player.getPlayerSkinURLInDB(playerIdentifier), null);
 	}
 
 	/**
@@ -71,12 +85,13 @@ public class Player {
 	 * @param username
 	 */
 	public Player(String playerIdentifier, InetAddress playerAddress, int playerPort, String playerUsername,
-			int playerCredits, Appartment appartment) {
+			int playerCredits, String playerSkinURL, Appartment appartment) {
 		this.playerIdentifier = playerIdentifier;
 		this.playerAddress = playerAddress;
 		this.playerPort = playerPort;
 		this.playerUsername = playerUsername;
 		this.playerCredits = playerCredits;
+		this.playerSkinURL = playerSkinURL;
 		this.appartment = appartment;
 	}
 
@@ -88,6 +103,7 @@ public class Player {
 		playerJSON.put("playerPort", playerPort);
 		playerJSON.put("playerUsername", playerUsername);
 		playerJSON.put("playerCredits", playerCredits);
+		playerJSON.put("playerSkinURL", playerSkinURL);
 
 		return playerJSON;
 	}
