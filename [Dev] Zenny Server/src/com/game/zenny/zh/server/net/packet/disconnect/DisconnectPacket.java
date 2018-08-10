@@ -29,6 +29,7 @@ public class DisconnectPacket extends Packet {
 	@Override
 	public void serverReceivedAction(Server server, Player fromPlayer) {
 		if (server.getManager().containsPlayer(fromPlayer)) {
+			fromPlayer.getAppartment().removePlayer(fromPlayer);
 			server.getManager().removePlayer(fromPlayer);
 			Logger.log(server, LogType.INFO, "Player \""+fromPlayer.getPlayerUsername()+"\" disconnected");
 		}

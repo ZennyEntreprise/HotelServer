@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 import org.json.simple.JSONObject;
 
+import com.game.zenny.zh.server.appartment.Appartment;
 import com.game.zenny.zh.server.net.server.Server;
 
 public class Player {
@@ -16,7 +17,8 @@ public class Player {
 	 */
 	public static String getPlayerUsernameInDB(String playerIdentifier) {
 		try {
-			ResultSet query = Server.requestDB("SELECT playerUsername FROM players WHERE playerIdentifier = '"+playerIdentifier+"'");
+			ResultSet query = Server.requestDB(
+					"SELECT playerUsername FROM players WHERE playerIdentifier = '" + playerIdentifier + "'");
 			query.next();
 			String username = query.getString("playerUsername");
 			query.close();
@@ -32,7 +34,8 @@ public class Player {
 	 */
 	public static int getPlayerCreditsInDB(String playerIdentifier) {
 		try {
-			ResultSet query = Server.requestDB("SELECT playerCredits FROM players WHERE playerIdentifier = '"+playerIdentifier+"'");
+			ResultSet query = Server
+					.requestDB("SELECT playerCredits FROM players WHERE playerIdentifier = '" + playerIdentifier + "'");
 			query.next();
 			int playerCredits = query.getInt("playerCredits");
 			query.close();
@@ -49,6 +52,7 @@ public class Player {
 	private int playerPort;
 	private String playerUsername;
 	private int playerCredits;
+	private Appartment appartment;
 
 	/**
 	 * @param playerIdentifier
@@ -57,7 +61,7 @@ public class Player {
 	 */
 	public Player(String playerIdentifier, InetAddress playerAddress, int playerPort) {
 		this(playerIdentifier, playerAddress, playerPort, Player.getPlayerUsernameInDB(playerIdentifier),
-				Player.getPlayerCreditsInDB(playerIdentifier));
+				Player.getPlayerCreditsInDB(playerIdentifier), null);
 	}
 
 	/**
@@ -66,26 +70,28 @@ public class Player {
 	 * @param playerPort
 	 * @param username
 	 */
-	public Player(String playerIdentifier, InetAddress playerAddress, int playerPort, String playerUsername, int playerCredits) {
+	public Player(String playerIdentifier, InetAddress playerAddress, int playerPort, String playerUsername,
+			int playerCredits, Appartment appartment) {
 		this.playerIdentifier = playerIdentifier;
 		this.playerAddress = playerAddress;
 		this.playerPort = playerPort;
 		this.playerUsername = playerUsername;
 		this.playerCredits = playerCredits;
+		this.appartment = appartment;
 	}
 
 	@SuppressWarnings("unchecked")
-	public String toJSON() {
+	public JSONObject toJSON() {
 		JSONObject playerJSON = new JSONObject();
 		playerJSON.put("playerIdentifier", playerIdentifier);
 		playerJSON.put("playerAddress", playerAddress.getHostAddress().toString());
 		playerJSON.put("playerPort", playerPort);
 		playerJSON.put("playerUsername", playerUsername);
 		playerJSON.put("playerCredits", playerCredits);
-		
-		return playerJSON.toJSONString();
+
+		return playerJSON;
 	}
-	
+
 	/**
 	 * @return the playerIdentifier
 	 */
@@ -159,6 +165,21 @@ public class Player {
 	 */
 	public void setPlayerCredits(int playerCredits) {
 		this.playerCredits = playerCredits;
+	}
+
+	/**
+	 * @return the appartment
+	 */
+	public Appartment getAppartment() {
+		return appartment;
+	}
+
+	/**
+	 * @param appartment
+	 *            the appartment to set
+	 */
+	public void setAppartment(Appartment appartment) {
+		this.appartment = appartment;
 	}
 
 }

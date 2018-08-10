@@ -17,11 +17,11 @@ public class AppartmentGroundCell {
 	}
 
 	@SuppressWarnings("unchecked")
-	public String toJSON() {
+	public JSONArray toJSON() {
 		JSONArray cellDatas = new JSONArray();
 		cellDatas.add(activated);
 		
-		return cellDatas.toJSONString();
+		return cellDatas;
 	}
 	
 	//// GETTERS AND SETTERS

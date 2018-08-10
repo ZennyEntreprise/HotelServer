@@ -36,7 +36,7 @@ public class AppartmentStructure {
 	}
 
 	@SuppressWarnings("unchecked")
-	public String toJSON() {
+	public JSONArray toJSON() {
 		JSONArray appartmentStructureXY = new JSONArray();
 		for (int y = 0; y < structure.length; y++) {
 			JSONArray appartmentStructureY = new JSONArray();
@@ -46,7 +46,7 @@ public class AppartmentStructure {
 			appartmentStructureXY.add(appartmentStructureY);
 		}
 		
-		return appartmentStructureXY.toJSONString();
+		return appartmentStructureXY;
 	}
 	
 	//// GETTERS AND SETTERS

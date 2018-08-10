@@ -9,8 +9,10 @@ import com.game.zenny.zh.server.logger.LogType;
 import com.game.zenny.zh.server.logger.Logger;
 import com.game.zenny.zh.server.net.packet.Packet;
 import com.game.zenny.zh.server.net.packet.UnknownPacket;
+import com.game.zenny.zh.server.net.packet.appartment.AddPlayerToAppartmentPacket;
 import com.game.zenny.zh.server.net.packet.appartment.AppartmentToGoPacket;
 import com.game.zenny.zh.server.net.packet.appartment.GoIntoAppartmentPacket;
+import com.game.zenny.zh.server.net.packet.appartment.RemovePlayerToAppartmentPacket;
 import com.game.zenny.zh.server.net.packet.disconnect.DisconnectPacket;
 import com.game.zenny.zh.server.net.packet.login.ErrorLoginPacket;
 import com.game.zenny.zh.server.net.packet.login.LoginPacket;
@@ -135,6 +137,8 @@ public abstract class Bridge {
 		Packet.registerPacket(4, DisconnectPacket.class);
 		Packet.registerPacket(5, GoIntoAppartmentPacket.class);
 		Packet.registerPacket(6, AppartmentToGoPacket.class);
+		Packet.registerPacket(7, AddPlayerToAppartmentPacket.class);
+		Packet.registerPacket(8, RemovePlayerToAppartmentPacket.class);
 	}
 
 	/**

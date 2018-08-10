@@ -2,9 +2,15 @@ package com.game.zenny.zh.server.appartment;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import com.game.zenny.zh.server.entity.Player;
+import com.game.zenny.zh.server.net.packet.Packet;
+import com.game.zenny.zh.server.net.packet.appartment.AddPlayerToAppartmentPacket;
+import com.game.zenny.zh.server.net.packet.appartment.RemovePlayerToAppartmentPacket;
 import com.game.zenny.zh.server.net.server.Server;
 
 public class Appartment {
@@ -61,41 +67,67 @@ public class Appartment {
 	
 	//// OBJECT
 	// -- APPARTMENT
+	private Server server;
 	private String appartmentIdentifier;
 	private String ownerPlayerIdentifier;
 	private String appartmentName;
 	private AppartmentStructure appartmentStructure;
+	private ArrayList<Player> playersInAppartment;
 
 	//// CONSTRUCTORS
 
-	public Appartment(String appartmentIdentifier) {
+	/**
+	 * @param appartmentIdentifier
+	 */
+	public Appartment(Server server, String appartmentIdentifier) {
+		this.server = server;
 		this.appartmentIdentifier = appartmentIdentifier;
 		this.ownerPlayerIdentifier = Appartment.getAppartmentOwnerPlayerIdentifierInDB(appartmentIdentifier);
 		this.appartmentName = Appartment.getAppartmentNameInDB(appartmentIdentifier);
 		this.appartmentStructure = new AppartmentStructure(Appartment.getAppartmentStructureJSONInDB(appartmentIdentifier));
+		this.playersInAppartment = new ArrayList<Player>();
 	}
 
 	/**
 	 * @param structure
 	 */
-	public Appartment(String appartmentIdentifier, String ownerPlayerIdentifier, String appartmentName,
-			AppartmentStructure appartmentStructure) {
+	public Appartment(Server server, String appartmentIdentifier, String ownerPlayerIdentifier, String appartmentName,
+			AppartmentStructure appartmentStructure, ArrayList<Player> playersInAppartment) {
+		this.server = server;
 		this.appartmentIdentifier = appartmentIdentifier;
 		this.ownerPlayerIdentifier = ownerPlayerIdentifier;
 		this.appartmentName = appartmentName;
 		this.appartmentStructure = appartmentStructure;
+		this.playersInAppartment = playersInAppartment;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public String toJSON() {
+	public JSONObject toJSON() {
 		JSONObject appartment = new JSONObject();
 		
 		appartment.put("appartmentIdentifier", appartmentIdentifier);
 		appartment.put("ownerPlayerIdentifier", ownerPlayerIdentifier);
 		appartment.put("appartmentName", appartmentName);
 		appartment.put("appartmentStructure", appartmentStructure.toJSON());
+		JSONArray playersInAppartmentJSON = new JSONArray();
+		for (Player player : playersInAppartment) {
+			playersInAppartmentJSON.add(player.toJSON());
+		}
+		appartment.put("playersInAppartment", playersInAppartmentJSON);
 		
-		return appartment.toJSONString();
+		return appartment;
+	}
+	
+	public void addPlayer(Player player) {
+		server.sendPacket(new AddPlayerToAppartmentPacket(Packet.buildDatasObject(player.toJSON().toJSONString()), server.getIdentifier(), null), playersInAppartment);
+		
+		playersInAppartment.add(player);
+	}
+	
+	public void removePlayer(Player player) {
+		playersInAppartment.remove(player);
+		
+		server.sendPacket(new RemovePlayerToAppartmentPacket(Packet.buildDatasObject(player.toJSON().toJSONString()), server.getIdentifier(), null), playersInAppartment);
 	}
 	
 	////GETTERS AND SETTERS
@@ -154,6 +186,20 @@ public class Appartment {
 	 */
 	public void setAppartmentStructure(AppartmentStructure appartmentStructure) {
 		this.appartmentStructure = appartmentStructure;
+	}
+
+	/**
+	 * @return the playersInAppartment
+	 */
+	public ArrayList<Player> getPlayersInAppartment() {
+		return playersInAppartment;
+	}
+
+	/**
+	 * @param playersInAppartment the playersInAppartment to set
+	 */
+	public void setPlayersInAppartment(ArrayList<Player> playersInAppartment) {
+		this.playersInAppartment = playersInAppartment;
 	}
 
 }

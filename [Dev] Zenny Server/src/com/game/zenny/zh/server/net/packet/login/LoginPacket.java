@@ -72,7 +72,7 @@ public class LoginPacket extends Packet {
 		} else {
 			Player player = new Player(newPlayerIdentifier, fromPlayerAddress, fromPlayerPort);
 			server.getManager().addPlayer(player);
-			server.sendPacket(new ValidLoginPacket(Packet.buildDatasObject(player.toJSON()), server.getIdentifier(), player.getPlayerIdentifier()), player);
+			server.sendPacket(new ValidLoginPacket(Packet.buildDatasObject(player.toJSON().toJSONString()), server.getIdentifier(), player.getPlayerIdentifier()), player);
 			Logger.log(server, LogType.INFO, "Player \""+player.getPlayerUsername()+"\" connected");
 		}
 	}
