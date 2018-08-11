@@ -136,4 +136,8 @@ public class Manager {
 				return appartment;
 		return null;
 	}
+
+	public void removeAppartment(Appartment appartment) {
+		allAppartments.remove(appartment);
+	}
 }

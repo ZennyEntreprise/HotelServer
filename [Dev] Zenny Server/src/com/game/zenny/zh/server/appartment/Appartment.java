@@ -127,7 +127,11 @@ public class Appartment {
 	public void removePlayer(Player player) {
 		playersInAppartment.remove(player);
 		
-		server.sendPacket(new RemovePlayerToAppartmentPacket(Packet.buildDatasObject(player.toJSON().toJSONString()), server.getIdentifier(), null), playersInAppartment);
+		if (playersInAppartment.size() == 0) {
+			server.getManager().removeAppartment(this);
+		} else {
+			server.sendPacket(new RemovePlayerToAppartmentPacket(Packet.buildDatasObject(player.toJSON().toJSONString()), server.getIdentifier(), null), playersInAppartment);
+		}
 	}
 	
 	////GETTERS AND SETTERS
